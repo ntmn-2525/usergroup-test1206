@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-　
 from flask import Flask, request, abort
 import os
+import argparse
 from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
+
 
 from linebot import (
     LineBotApi, WebhookHandler

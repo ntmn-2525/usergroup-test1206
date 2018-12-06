@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-　
 from flask import Flask, request, abort
+import os
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -10,13 +11,11 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
-import os
 
 app = Flask(__name__)
 
-#LINE Access Token
+#環境変数取得
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
-#LINE Channel Secret
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
@@ -43,13 +42,11 @@ def callback():
 
     return 'OK'
 
-
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=event.message.text))
-
 
 if __name__ == "__main__":
 #    app.run()

@@ -1,1 +1,1 @@
-web: python parrot.py
+web: python main.py

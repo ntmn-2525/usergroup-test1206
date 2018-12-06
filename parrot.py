@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-　
 from flask import Flask, request, abort
 import os
+from google.cloud import language
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -22,8 +23,43 @@ line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
 @app.route("/")
-def hello_world():
-    return "hello world!"
+
+#感情解析API
+def analyze_sentiment():
+    
+    # クライアントのインスタンス化
+    language_client = language.Client()
+
+    # 分析したいテキスト
+    text = """
+    頑張れ頑張れできるできる絶対できる頑張れもっとやれるって.
+    やれる気持ちの問題だ頑張れ頑張れそこだ！
+    そこで諦めるな絶対に頑張れ積極的にポジティブに頑張る頑張る.
+    """
+
+    # リクエストのデータを格納
+    document = language_client.document_from_text(text)
+    # 感情分析のレスポンスを格納
+    response = document.analyze_sentiment()
+    # ドキュメント全体の感情が含まれたオブジェクト
+    sentiment = response.sentiment
+    # 各段落の感情が含まれたオブジェクトのリスト
+    sentences = response.sentences
+
+    # 全体の感情スコアを出力
+    print('Text全体')
+    print('Text: {}'.format(text))
+    print('Sentiment: {}'.format(sentiment.score))
+    #print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
+
+    # 各段落の感情スコアを出力
+    #for sentence in sentences:
+    #    print('=' * 20)
+    #    print('Text: {}'.format(sentence.content.encode('utf_8'))) #追加
+    #    print('Sentiment: {}, {}'.format(sentence.sentiment.score, sentence.sentiment.magnitude))
+
+
+
 
 @app.route("/callback", methods=['POST'])
 def callback():

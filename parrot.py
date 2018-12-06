@@ -51,7 +51,7 @@ def analyze_sentiment():
     sentences = response.sentences
 
     # 全体の感情スコアを出力
-    return 'Text: {}'.format(text).'Sentiment: {}'.format(sentiment.score)
+    return format(sentiment.score)
     #print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
 
     # 各段落の感情スコアを出力
